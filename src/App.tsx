@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { Layout, Login, Public } from './components';
+import { DashLayout, Layout, Login, Public } from './components';
 
 function App() {
   return (
@@ -7,6 +7,8 @@ function App() {
       <Route path='/' element={<Layout />}>
         <Route index element={<Public />} />
         <Route path='login' element={<Login />} />
+
+        <Route path='dash' element={<DashLayout />}></Route>
       </Route>
     </Routes>
   );
