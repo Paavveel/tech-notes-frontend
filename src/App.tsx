@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
-import { DashLayout, Layout, Login, Public } from './components';
+import { DashLayout, Layout, Public } from './components';
+import { Login } from './features/auth/Login';
 
 function App() {
   return (
