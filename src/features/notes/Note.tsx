@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { INote } from './notesTypes';
 
 export const Note = ({
-  _id,
+  id,
   title,
   username,
   completed,
@@ -29,7 +29,7 @@ export const Note = ({
     minute: 'numeric',
   });
 
-  const handleEdit = () => navigate(`/dash/notes/${_id}`);
+  const handleEdit = () => navigate(`/dash/notes/${id}`);
 
   return (
     <tr className='table__row'>

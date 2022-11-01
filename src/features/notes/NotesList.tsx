@@ -49,7 +49,7 @@ export const NotesList = () => {
       </thead>
       <tbody>
         {sortedNotes?.map((note) => (
-          <Note key={note._id} {...note} />
+          <Note key={note.id} {...note} />
         ))}
       </tbody>
     </table>
