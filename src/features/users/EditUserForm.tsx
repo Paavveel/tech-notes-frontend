@@ -1,27 +1,42 @@
-import { faSave } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { ROLES } from '../../config/roles';
-import { useAddNewUserMutation } from './usersApiSlice';
-import { INewUser } from './usersTypes';
+import { useDeleteUserMutation, useUpdateUserMutation } from './usersApiSlice';
+import { IUser, IUserUpdate } from './usersTypes';
 
-export const NewUserForm = () => {
-  const [addNewUser, { isLoading, isSuccess, isError, error }] =
-    useAddNewUserMutation();
+export const EditUserForm = ({ id, active, roles, username }: IUser) => {
+  const [isUserActive, setIsUserActive] = useState(active);
+  const [
+    updateUser,
+    { isLoading, isSuccess, isError: isUpdError, error: upderror },
+  ] = useUpdateUserMutation();
+
+  const [
+    deleteUser,
+    { isSuccess: isDelSuccess, isError: isDelError, error: delerror },
+  ] = useDeleteUserMutation();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<INewUser>();
+  } = useForm<IUserUpdate>();
 
   const navigate = useNavigate();
 
-  const onSaveUserClicked: SubmitHandler<INewUser> = async (data) => {
+  const onSaveUserClicked: SubmitHandler<IUserUpdate> = async (data) => {
     console.log(data);
     // navigate('/dash/users')
     //  await addNewUser({ username, password, roles });
   };
+
+  const onDeleteUserClicked = async () => {
+    // await deleteUser({ id });
+  };
+  const onActiveChanged = () => setIsUserActive((prev) => !prev);
 
   const options = Object.values(ROLES).map((role) => {
     return (
@@ -31,23 +46,35 @@ export const NewUserForm = () => {
     );
   });
 
-  const errClass = isError ? 'errmsg' : 'offscreen';
+  const errClass = delerror || upderror ? 'errmsg' : 'offscreen';
   const validUserClass = errors.username ? 'form__input--incomplete' : '';
   const validPwdClass = errors.password ? 'form__input--incomplete' : '';
   const validRolesClass = errors.roles ? 'form__input--incomplete' : '';
 
   return (
     <>
-      {error && (
-        <p className={errClass}>Не удалось создать нового пользователя</p>
-      )}
+      {upderror && <p className={errClass}>Не удалось обновить пользователя</p>}
+      {delerror && <p className={errClass}>Не удалось удалить пользователя</p>}
 
       <form className='form' onSubmit={handleSubmit(onSaveUserClicked)}>
         <div className='form__title-row'>
-          <h2>New User</h2>
+          <h2>Edit User</h2>
           <div className='form__action-buttons'>
-            <button className='icon-button' title='Save' disabled={isLoading}>
+            <button
+              type='submit'
+              className='icon-button'
+              title='Save'
+              disabled={isLoading}
+            >
               <FontAwesomeIcon icon={faSave} />
+            </button>
+            <button
+              type='button'
+              className='icon-button'
+              title='Delete'
+              onClick={onDeleteUserClicked}
+            >
+              <FontAwesomeIcon icon={faTrashCan} />
             </button>
           </div>
         </div>
@@ -94,6 +121,21 @@ export const NewUserForm = () => {
         >
           {options}
         </select>
+
+        <label
+          className='form__label form__checkbox-container'
+          htmlFor='user-active'
+        >
+          ACTIVE:
+          <input
+            {...register('active')}
+            className='form__checkbox'
+            id='user-active'
+            type='checkbox'
+            checked={isUserActive}
+            onChange={onActiveChanged}
+          />
+        </label>
       </form>
     </>
   );
