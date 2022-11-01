@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import { IUser } from './usersTypes';
 
-export const User = ({ _id, active, roles, username }: IUser) => {
+export const User = ({ id, active, roles, username }: IUser) => {
   const navigate = useNavigate();
 
-  const handleEdit = () => navigate(`/dash/users/${_id}`);
+  const handleEdit = () => navigate(`/dash/users/${id}`);
 
   const cellStatus = active ? '' : 'table__cell--inactive';
 

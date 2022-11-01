@@ -1,15 +1,20 @@
 import { apiSlice } from '../../app/api/apiSlice';
-import { INewUser, IUser, IUserUpdate } from './usersTypes';
+import { INewUser, IUser, IUserApiResponse, IUserUpdate } from './usersTypes';
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUsers: builder.query<IUser[], void>({
       query: () => '/users',
       keepUnusedDataFor: 5,
+      transformResponse: (response: IUserApiResponse[]) =>
+        response?.map(({ _id, ...props }) => ({
+          id: _id,
+          ...props,
+        })),
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ _id: id }) => ({
+              ...result.map(({ id }) => ({
                 type: 'User' as const,
                 id,
               })),
@@ -35,17 +40,17 @@ export const usersApiSlice = apiSlice.injectEndpoints({
           ...initialUserData,
         },
       }),
-      invalidatesTags: (result, err, { _id: id }) => [{ type: 'User', id }],
+      invalidatesTags: (result, err, { id }) => [{ type: 'User', id }],
     }),
-    deleteUser: builder.mutation<void, Pick<IUser, '_id'>>({
-      query: ({ _id }) => ({
+    deleteUser: builder.mutation<void, Pick<IUser, 'id'>>({
+      query: ({ id }) => ({
         url: '/users',
         method: 'PATCH',
         body: {
-          id: _id,
+          id,
         },
       }),
-      invalidatesTags: (result, err, { _id: id }) => [{ type: 'User', id }],
+      invalidatesTags: (result, err, { id }) => [{ type: 'User', id }],
     }),
   }),
 });
