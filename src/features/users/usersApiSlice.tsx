@@ -45,7 +45,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     deleteUser: builder.mutation<void, Pick<IUser, 'id'>>({
       query: ({ id }) => ({
         url: '/users',
-        method: 'PATCH',
+        method: 'DELETE',
         body: {
           id,
         },
