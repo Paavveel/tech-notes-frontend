@@ -3,7 +3,7 @@ import { INewUser, IUser, IUserApiResponse, IUserUpdate } from './usersTypes';
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getUsers: builder.query<IUser[], void>({
+    getUsers: builder.query<IUser[], null>({
       query: () => '/users',
       transformResponse: (response: IUserApiResponse[]) =>
         response?.map(({ _id, ...props }) => ({

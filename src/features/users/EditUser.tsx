@@ -6,7 +6,13 @@ import { UserParams } from './usersTypes';
 export const EditUser = () => {
   const { id } = useParams<keyof UserParams>() as UserParams;
 
-  const { data: user, isLoading, isError } = useGetUserByIdQuery(id);
+  const {
+    data: user,
+    isLoading,
+    isError,
+  } = useGetUserByIdQuery(id, {
+    refetchOnReconnect: true,
+  });
 
   if (isLoading) {
     return <p>Loading...</p>;

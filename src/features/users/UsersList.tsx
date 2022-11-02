@@ -2,7 +2,15 @@ import { User } from './User';
 import { useGetUsersQuery } from './usersApiSlice';
 
 export const UsersList = () => {
-  const { data: users, isLoading, isError } = useGetUsersQuery();
+  const {
+    data: users,
+    isLoading,
+    isError,
+  } = useGetUsersQuery(null, {
+    pollingInterval: 60000,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+  });
 
   if (isLoading) {
     return <p>Loading...</p>;
