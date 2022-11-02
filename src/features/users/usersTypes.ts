@@ -20,3 +20,7 @@ export interface INewUser extends Pick<IUser, 'username' | 'roles'> {
 export interface IUserUpdate extends IUser {
   password?: string;
 }
+
+export type UserParams = {
+  id: string;
+};

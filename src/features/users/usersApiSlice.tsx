@@ -5,7 +5,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUsers: builder.query<IUser[], void>({
       query: () => '/users',
-      keepUnusedDataFor: 5,
       transformResponse: (response: IUserApiResponse[]) =>
         response?.map(({ _id, ...props }) => ({
           id: _id,
@@ -21,6 +20,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
               { type: 'User', id: 'LIST' },
             ]
           : [{ type: 'User', id: 'LIST' }],
+    }),
+    getUserById: builder.query<IUser, IUser['id']>({
+      query: (id) => `/users/${id}`,
+      keepUnusedDataFor: 0,
+      transformResponse: ({ _id, ...props }: IUserApiResponse) => ({
+        id: _id,
+        ...props,
+      }),
     }),
     addNewUser: builder.mutation<void, INewUser>({
       query: (initialUserData) => ({
@@ -42,21 +49,22 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, err, { id }) => [{ type: 'User', id }],
     }),
-    deleteUser: builder.mutation<void, Pick<IUser, 'id'>>({
-      query: ({ id }) => ({
+    deleteUser: builder.mutation<void, IUser['id']>({
+      query: (id) => ({
         url: '/users',
         method: 'DELETE',
         body: {
           id,
         },
       }),
-      invalidatesTags: (result, err, { id }) => [{ type: 'User', id }],
+      invalidatesTags: (result, err, id) => [{ type: 'User', id }],
     }),
   }),
 });
 
 export const {
   useGetUsersQuery,
+  useGetUserByIdQuery,
   useAddNewUserMutation,
   useUpdateUserMutation,
   useDeleteUserMutation,

@@ -1,5 +1,6 @@
 import { faSave } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import cn from 'classnames';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { ROLES } from '../../config/roles';
@@ -7,8 +8,7 @@ import { useAddNewUserMutation } from './usersApiSlice';
 import { INewUser } from './usersTypes';
 
 export const NewUserForm = () => {
-  const [addNewUser, { isLoading, isSuccess, isError, error }] =
-    useAddNewUserMutation();
+  const [addNewUser, { isLoading, isError }] = useAddNewUserMutation();
   const {
     register,
     handleSubmit,
@@ -18,9 +18,8 @@ export const NewUserForm = () => {
   const navigate = useNavigate();
 
   const onSaveUserClicked: SubmitHandler<INewUser> = async (data) => {
-    console.log(data);
-    // navigate('/dash/users')
-    //  await addNewUser({ username, password, roles });
+    await addNewUser(data);
+    navigate('/dash/users');
   };
 
   const options = Object.values(ROLES).map((role) => {
@@ -31,69 +30,103 @@ export const NewUserForm = () => {
     );
   });
 
-  const errClass = isError ? 'errmsg' : 'offscreen';
-  const validUserClass = errors.username ? 'form__input--incomplete' : '';
-  const validPwdClass = errors.password ? 'form__input--incomplete' : '';
-  const validRolesClass = errors.roles ? 'form__input--incomplete' : '';
-
   return (
     <>
-      {error && (
-        <p className={errClass}>Не удалось создать нового пользователя</p>
-      )}
+      {isError && <p className='errmsg'>Не удалось удалить пользователя</p>}
 
       <form className='form' onSubmit={handleSubmit(onSaveUserClicked)}>
         <div className='form__title-row'>
-          <h2>New User</h2>
+          <h2>Создание нового пользователя</h2>
           <div className='form__action-buttons'>
-            <button className='icon-button' title='Save' disabled={isLoading}>
+            <button
+              type='submit'
+              className='icon-button'
+              title='Save'
+              disabled={isLoading}
+            >
               <FontAwesomeIcon icon={faSave} />
             </button>
           </div>
         </div>
         <label className='form__label' htmlFor='username'>
-          Username: <span className='nowrap'>[3-20 letters]</span>
+          Имя пользователя:
         </label>
         <input
           {...register('username', {
-            required: true,
-            pattern: /^[A-z]$/,
-            minLength: 3,
-            maxLength: 20,
+            required: {
+              value: true,
+              message: 'Это обязательное поле',
+            },
+            pattern: {
+              value: /^[A-Za-z0-9]+$/i,
+              message: 'Имя должно состоять из букв и чисел',
+            },
+            minLength: {
+              value: 3,
+              message: 'Имя должно быть больше 3 символа',
+            },
+            maxLength: {
+              value: 20,
+              message: 'Имя должно быть меньше 20 символов',
+            },
           })}
-          className={`form__input ${validUserClass}`}
+          className={cn('form__input', {
+            'form__input--incomplete': errors.username,
+          })}
           id='username'
           type='text'
           autoComplete='off'
         />
-
+        {errors.username?.message && (
+          <p className='errmsg'>{errors.username.message}</p>
+        )}
         <label className='form__label' htmlFor='password'>
-          Password: <span className='nowrap'>[4-12 chars incl. !@#$%]</span>
+          Пароль:
         </label>
         <input
           {...register('password', {
-            required: true,
-            pattern: /^[A-z0-9!@#$%]$/,
-            minLength: 4,
-            maxLength: 12,
+            minLength: {
+              value: 6,
+              message: 'Пароль должен быть больше 6 символов',
+            },
+            maxLength: {
+              value: 12,
+              message: 'Пароль должен быть меньше 12 символов',
+            },
           })}
-          className={`form__input ${validPwdClass}`}
+          className={cn('form__input', {
+            'form__input--incomplete': errors.password,
+          })}
           id='password'
           type='password'
         />
+        {errors.password?.message && (
+          <p className='errmsg'>{errors.password?.message}</p>
+        )}
 
         <label className='form__label' htmlFor='roles'>
-          ASSIGNED ROLES:
+          Роли:
         </label>
         <select
-          {...register('roles')}
-          className={`form__select ${validRolesClass}`}
+          {...register('roles', {
+            required: {
+              value: true,
+              message: 'Укажите как минимум 1 роль',
+            },
+          })}
+          className={cn('form__select', {
+            'form__input--incomplete': errors.roles,
+          })}
           id='roles'
           multiple={true}
           size={3}
+          defaultValue={['Employee']}
         >
           {options}
         </select>
+        {errors.roles?.message && (
+          <p className='errmsg'>{errors.roles.message}</p>
+        )}
       </form>
     </>
   );
