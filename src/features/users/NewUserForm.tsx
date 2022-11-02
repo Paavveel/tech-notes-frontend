@@ -85,6 +85,10 @@ export const NewUserForm = () => {
         </label>
         <input
           {...register('password', {
+            required: {
+              value: true,
+              message: 'Это обязательное поле',
+            },
             minLength: {
               value: 6,
               message: 'Пароль должен быть больше 6 символов',
