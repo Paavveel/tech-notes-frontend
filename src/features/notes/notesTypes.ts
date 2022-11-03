@@ -1,3 +1,5 @@
+import { IUser } from '../users';
+
 export interface INoteApiResponse {
   _id: string;
   user: string;
@@ -18,3 +20,12 @@ export interface INewNote extends Pick<INote, 'user' | 'title' | 'text'> {}
 
 export interface INoteUpdate
   extends Pick<INote, 'id' | 'user' | 'title' | 'text' | 'completed'> {}
+
+export type NoteParams = {
+  id: string;
+};
+
+export interface EditNoteFormProps {
+  note: INote;
+  users: IUser[];
+}

@@ -6,7 +6,7 @@ export const NotesList = () => {
     data: sortedNotes,
     isLoading,
     isError,
-  } = useGetNotesQuery(undefined, {
+  } = useGetNotesQuery(null, {
     selectFromResult: ({ data, ...props }) => ({
       data:
         data &&

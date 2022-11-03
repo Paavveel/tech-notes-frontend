@@ -26,6 +26,8 @@ export const EditUserForm = ({ id, active, roles, username }: IUser) => {
   } = useForm<IUserUpdate>({
     defaultValues: {
       username,
+      roles,
+      active,
     },
   });
 
@@ -162,7 +164,6 @@ export const EditUserForm = ({ id, active, roles, username }: IUser) => {
           id='roles'
           multiple={true}
           size={3}
-          defaultValue={roles}
         >
           {options}
         </select>
@@ -180,7 +181,6 @@ export const EditUserForm = ({ id, active, roles, username }: IUser) => {
             className='form__checkbox'
             id='user-active'
             type='checkbox'
-            defaultChecked={active}
           />
         </label>
       </form>

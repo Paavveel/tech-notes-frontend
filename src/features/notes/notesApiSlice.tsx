@@ -3,9 +3,8 @@ import { INewNote, INote, INoteApiResponse, INoteUpdate } from './notesTypes';
 
 export const notesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getNotes: builder.query<INote[], void>({
+    getNotes: builder.query<INote[], null>({
       query: () => '/notes',
-      keepUnusedDataFor: 5,
       transformResponse: (response: INoteApiResponse[]) =>
         response?.map(({ _id, ...props }) => ({
           id: _id,
@@ -14,10 +13,21 @@ export const notesApiSlice = apiSlice.injectEndpoints({
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: 'Note' as const, id })),
+              ...result.map(({ id }) => ({
+                type: 'Note' as const,
+                id,
+              })),
               { type: 'Note', id: 'LIST' },
             ]
           : [{ type: 'Note', id: 'LIST' }],
+    }),
+    getNoteById: builder.query<INote, INote['id']>({
+      query: (id) => `/notes/${id}`,
+      keepUnusedDataFor: 0,
+      transformResponse: ({ _id, ...props }: INoteApiResponse) => ({
+        id: _id,
+        ...props,
+      }),
     }),
     addNewNote: builder.mutation<void, INewNote>({
       query: (initialNoteData) => ({
@@ -39,17 +49,23 @@ export const notesApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, err, { id }) => [{ type: 'Note', id }],
     }),
-    deleteNote: builder.mutation<void, Pick<INote, 'id'>>({
-      query: ({ id }) => ({
+    deleteNote: builder.mutation<void, INote['id']>({
+      query: (id) => ({
         url: '/notes',
         method: 'DELETE',
         body: {
           id,
         },
       }),
-      invalidatesTags: (result, err, { id }) => [{ type: 'Note', id }],
+      invalidatesTags: (result, err, id) => [{ type: 'Note', id }],
     }),
   }),
 });
 
-export const { useGetNotesQuery } = notesApiSlice;
+export const {
+  useGetNotesQuery,
+  useGetNoteByIdQuery,
+  useAddNewNoteMutation,
+  useUpdateNoteMutation,
+  useDeleteNoteMutation,
+} = notesApiSlice;
