@@ -32,7 +32,7 @@ export const NewUserForm = () => {
 
   return (
     <>
-      {isError && <p className='errmsg'>Не удалось удалить пользователя</p>}
+      {isError && <p className='errmsg'>Не удалось создать пользователя</p>}
 
       <form className='form' onSubmit={handleSubmit(onSaveUserClicked)}>
         <div className='form__title-row'>
@@ -105,7 +105,7 @@ export const NewUserForm = () => {
           type='password'
         />
         {errors.password?.message && (
-          <p className='errmsg'>{errors.password?.message}</p>
+          <p className='errmsg'>{errors.password.message}</p>
         )}
 
         <label className='form__label' htmlFor='roles'>
@@ -122,7 +122,7 @@ export const NewUserForm = () => {
             'form__input--incomplete': errors.roles,
           })}
           id='roles'
-          multiple={true}
+          multiple
           size={3}
           defaultValue={['Employee']}
         >
