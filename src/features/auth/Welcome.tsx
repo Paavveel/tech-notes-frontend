@@ -4,7 +4,7 @@ export const Welcome = () => {
   const date = new Date();
   const today = new Intl.DateTimeFormat('ru', {
     dateStyle: 'full',
-    timeStyle: 'long',
+    timeStyle: 'short',
   }).format(date);
 
   return (
