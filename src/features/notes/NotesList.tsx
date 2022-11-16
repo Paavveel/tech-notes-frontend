@@ -15,6 +15,9 @@ export const NotesList = () => {
         ),
       ...props,
     }),
+    pollingInterval: 60 * 1000,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
   });
 
   if (isLoading) return <p>Loading...</p>;
