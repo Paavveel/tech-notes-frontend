@@ -1,5 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
+import { IAuthResponse } from './authTypes';
 
 interface IInitialState {
   token: null | string;
@@ -13,11 +14,11 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: initialState,
   reducers: {
-    setCredentials: (state, action) => {
+    setCredentials: (state, action: PayloadAction<IAuthResponse>) => {
       const { accessToken } = action.payload;
       state.token = accessToken;
     },
-    logOut: (state, action) => {
+    logOut: (state, action: PayloadAction) => {
       state.token = null;
     },
   },
