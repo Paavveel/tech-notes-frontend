@@ -27,19 +27,15 @@ export const Login = () => {
       dispatch(setCredentials({ accessToken }));
       navigate('/dash');
     } catch (err) {
-      if (err) {
-        if (isFetchBaseQueryError(err)) {
-          // you can access all properties of `FetchBaseQueryError` here
-          const errMsg = 'error' in err ? err.error : JSON.stringify(err.data);
-          if (!err.status) {
-            setErrMsg('No Server Response');
-          } else if (err.status === 400) {
-            setErrMsg('Missing Username or Password');
-          } else if (err.status === 401) {
-            setErrMsg('Unauthorized');
-          } else {
-            setErrMsg(errMsg);
-          }
+      if (isFetchBaseQueryError(err)) {
+        if (!err.status) {
+          setErrMsg('No Server Response');
+        } else if (err.status === 400) {
+          setErrMsg('Missing Username or Password');
+        } else if (err.status === 401) {
+          setErrMsg('Unauthorized');
+        } else {
+          setErrMsg((err.data as { message: string }).message);
         }
       }
 
