@@ -5,12 +5,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { setCredentials } from '.';
 import { isFetchBaseQueryError } from '../../app/api/helpers';
 import { useAppDispatch } from '../../app/hooks';
+import { usePersist } from '../../hooks/usePersist';
 import { useLoginMutation } from './authApiSlice';
 import { ICredential } from './authTypes';
 
 export const Login = () => {
   const errRef = useRef() as RefObject<HTMLParagraphElement> | null;
   const [errMsg, setErrMsg] = useState('');
+  const [persist, setPersist] = usePersist();
   const [login, { isLoading, isError }] = useLoginMutation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -44,6 +46,8 @@ export const Login = () => {
       }
     }
   };
+
+  const handleToggle = () => setPersist((prev) => !prev);
 
   if (isLoading) return <p>Loading...</p>;
 
@@ -100,6 +104,17 @@ export const Login = () => {
             <p className='errmsg'>{errors.password.message}</p>
           )}
           <button className='form__submit-button'>Войти</button>
+
+          <label htmlFor='persist' className='form__persist'>
+            <input
+              type='checkbox'
+              className='form__checkbox'
+              id='persist'
+              onChange={handleToggle}
+              checked={persist}
+            />
+            Доверять этому устройству
+          </label>
         </form>
       </main>
       <footer>
