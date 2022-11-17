@@ -1,3 +1,4 @@
+import { isFetchBaseQueryError } from '../../app/api/helpers';
 import { User } from './User';
 import { useGetUsersQuery } from './usersApiSlice';
 
@@ -5,7 +6,7 @@ export const UsersList = () => {
   const {
     data: users,
     isLoading,
-    isError,
+    error,
   } = useGetUsersQuery(null, {
     pollingInterval: 60000,
     refetchOnFocus: true,
@@ -15,9 +16,14 @@ export const UsersList = () => {
   if (isLoading) {
     return <p>Loading...</p>;
   }
-  if (isError) {
-    return <p className='errmsg'>Не удалось загрузить пользователей</p>;
+  if (error) {
+    let errorMsg;
+    if (isFetchBaseQueryError(error)) {
+      errorMsg = (error.data as { message: string }).message;
+    }
+    return <p className='errmsg'>{errorMsg ?? 'Something went wrong...'}</p>;
   }
+
   return (
     <table className='table table--users'>
       <thead className='table__thead'>

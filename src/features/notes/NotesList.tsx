@@ -1,3 +1,4 @@
+import { isFetchBaseQueryError } from '../../app/api/helpers';
 import { Note } from './Note';
 import { useGetNotesQuery } from './notesApiSlice';
 
@@ -5,7 +6,7 @@ export const NotesList = () => {
   const {
     data: sortedNotes,
     isLoading,
-    isError,
+    error,
   } = useGetNotesQuery(null, {
     selectFromResult: ({ data, ...props }) => ({
       data:
@@ -22,8 +23,12 @@ export const NotesList = () => {
 
   if (isLoading) return <p>Loading...</p>;
 
-  if (isError) {
-    return <p className='errmsg'>Не удалось загрузить заметки</p>;
+  if (error) {
+    let errorMsg;
+    if (isFetchBaseQueryError(error)) {
+      errorMsg = (error.data as { message: string }).message;
+    }
+    return <p className='errmsg'>{errorMsg ?? 'Something went wrong...'}</p>;
   }
 
   return (
