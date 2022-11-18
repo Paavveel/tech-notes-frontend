@@ -1,21 +1,36 @@
 import { isFetchBaseQueryError } from '../../app/api/helpers';
+import { useAuth } from '../../hooks/useAuth';
 import { Note } from './Note';
 import { useGetNotesQuery } from './notesApiSlice';
+import { INote } from './notesTypes';
 
 export const NotesList = () => {
+  const { username, isManager, isAdmin } = useAuth();
   const {
     data: sortedNotes,
     isLoading,
     error,
   } = useGetNotesQuery(null, {
-    selectFromResult: ({ data, ...props }) => ({
-      data:
-        data &&
-        [...data].sort((a, b) =>
-          a.completed === b.completed ? 0 : a.completed ? 1 : -1
-        ),
-      ...props,
-    }),
+    selectFromResult: ({ data, ...props }) => {
+      let notes: INote[] | undefined;
+
+      if (data) {
+        if (isAdmin || isManager) {
+          notes = data;
+        } else {
+          notes = data.filter((note) => note.username === username);
+        }
+      }
+
+      return {
+        data:
+          notes &&
+          [...notes].sort((a, b) =>
+            a.completed === b.completed ? 0 : a.completed ? 1 : -1
+          ),
+        ...props,
+      };
+    },
     pollingInterval: 15 * 1000,
     refetchOnFocus: true,
     refetchOnReconnect: true,
