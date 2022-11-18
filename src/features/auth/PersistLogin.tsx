@@ -21,11 +21,8 @@ export const PersistLogin = () => {
       // React 18 Strict Mode
 
       const verifyRefreshToken = async () => {
-        console.log('verifying refresh token');
         try {
-          //const response =
           await refresh();
-          //const { accessToken } = response.data
           setTrueSuccess(true);
         } catch (err) {
           console.error(err);
@@ -43,7 +40,6 @@ export const PersistLogin = () => {
   }, []);
 
   if (!persist) {
-    console.log('no persist');
     // persist: no
     return <Outlet />;
   }
@@ -65,12 +61,10 @@ export const PersistLogin = () => {
     );
   }
   if (isSuccess && trueSuccess) {
-    console.log('success');
     //persist: yes, token: yes
     return <Outlet />;
   }
   if (token && isUninitialized) {
-    console.log('token and uninit');
     //persist: yes, token: yes
     return <Outlet />;
   }
