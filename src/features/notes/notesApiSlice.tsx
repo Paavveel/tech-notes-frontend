@@ -23,11 +23,12 @@ export const notesApiSlice = apiSlice.injectEndpoints({
     }),
     getNoteById: builder.query<INote, INote['id']>({
       query: (id) => `/notes/${id}`,
-      keepUnusedDataFor: 0,
+      // keepUnusedDataFor: 0,
       transformResponse: ({ _id, ...props }: INoteApiResponse) => ({
         id: _id,
         ...props,
       }),
+      providesTags: (result, error, id) => [{ type: 'Note', id }],
     }),
     addNewNote: builder.mutation<void, INewNote>({
       query: (initialNoteData) => ({
