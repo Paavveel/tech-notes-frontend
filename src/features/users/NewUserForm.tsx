@@ -8,7 +8,8 @@ import { useAddNewUserMutation } from './usersApiSlice';
 import { INewUser } from './usersTypes';
 
 export const NewUserForm = () => {
-  const [addNewUser, { isLoading, isError }] = useAddNewUserMutation();
+  const [addNewUser, { isLoading, isError, isSuccess }] =
+    useAddNewUserMutation();
   const {
     register,
     handleSubmit,
@@ -19,7 +20,10 @@ export const NewUserForm = () => {
 
   const onSaveUserClicked: SubmitHandler<INewUser> = async (data) => {
     await addNewUser(data);
-    navigate('/dash/users');
+
+    if (isSuccess) {
+      navigate('/dash/users');
+    }
   };
 
   const options = Object.values(ROLES).map((role) => {
