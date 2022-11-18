@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 import { useDeleteNoteMutation, useUpdateNoteMutation } from './notesApiSlice';
 import { EditNoteFormProps, INoteUpdate } from './notesTypes';
 
@@ -30,6 +31,8 @@ export const EditNoteForm = ({ note, users }: EditNoteFormProps) => {
       user: note.user,
     },
   });
+
+  const { isAdmin, isManager } = useAuth();
 
   const navigate = useNavigate();
 
@@ -96,15 +99,17 @@ export const EditNoteForm = ({ note, users }: EditNoteFormProps) => {
             >
               <FontAwesomeIcon icon={faSave} />
             </button>
-            <button
-              type='button'
-              className='icon-button'
-              title='Delete'
-              disabled={isDeleting}
-              onClick={onDeleteNoteClicked}
-            >
-              <FontAwesomeIcon icon={faTrashCan} />
-            </button>
+            {(isAdmin || isManager) && (
+              <button
+                type='button'
+                className='icon-button'
+                title='Delete'
+                disabled={isDeleting}
+                onClick={onDeleteNoteClicked}
+              >
+                <FontAwesomeIcon icon={faTrashCan} />
+              </button>
+            )}
           </div>
         </div>
         <label className='form__label' htmlFor='note-title'>
