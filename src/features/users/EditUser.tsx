@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import PulseLoader from 'react-spinners/PulseLoader';
 import { EditUserForm } from './EditUserForm';
 import { useGetUserByIdQuery } from './usersApiSlice';
 import { UserParams } from './usersTypes';
@@ -15,7 +16,7 @@ export const EditUser = () => {
   });
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <PulseLoader color='#FFF' />;
   }
 
   if (isError) {

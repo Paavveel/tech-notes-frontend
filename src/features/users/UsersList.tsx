@@ -1,3 +1,4 @@
+import PulseLoader from 'react-spinners/PulseLoader';
 import { isFetchBaseQueryError } from '../../app/api/helpers';
 import { User } from './User';
 import { useGetUsersQuery } from './usersApiSlice';
@@ -14,7 +15,7 @@ export const UsersList = () => {
   });
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <PulseLoader color='#FFF' />;
   }
   if (error) {
     let errorMsg;

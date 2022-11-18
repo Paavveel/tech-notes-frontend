@@ -3,12 +3,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cn from 'classnames';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import PulseLoader from 'react-spinners/PulseLoader';
 import { useGetUsersQuery } from '../users';
 import { useAddNewNoteMutation } from './notesApiSlice';
 import { INewNote } from './notesTypes';
 
 export const NewNoteForm = () => {
-  const { data: users, isSuccess: isUsersSuccess } = useGetUsersQuery(null, {
+  const {
+    data: users,
+    isSuccess: isUsersSuccess,
+    isLoading: isUsersLoading,
+  } = useGetUsersQuery(null, {
     refetchOnReconnect: true,
   });
 
@@ -34,6 +39,10 @@ export const NewNoteForm = () => {
       </option>
     );
   });
+
+  if (isUsersLoading) {
+    return <PulseLoader color='#FFF' />;
+  }
 
   return (
     <>

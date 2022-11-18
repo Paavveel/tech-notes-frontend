@@ -1,3 +1,4 @@
+import PulseLoader from 'react-spinners/PulseLoader';
 import { isFetchBaseQueryError } from '../../app/api/helpers';
 import { useAuth } from '../../hooks/useAuth';
 import { Note } from './Note';
@@ -36,7 +37,7 @@ export const NotesList = () => {
     refetchOnReconnect: true,
   });
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <PulseLoader color='#FFF' />;
 
   if (error) {
     let errorMsg;
