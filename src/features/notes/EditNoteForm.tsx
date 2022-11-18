@@ -10,12 +10,7 @@ import { EditNoteFormProps, INoteUpdate } from './notesTypes';
 export const EditNoteForm = ({ note, users }: EditNoteFormProps) => {
   const [
     updateNote,
-    {
-      isLoading: isUpdating,
-      isSuccess: isUpdSuccess,
-      isError: isUpdError,
-      error,
-    },
+    { isLoading: isUpdating, isSuccess: isUpdSuccess, error },
   ] = useUpdateNoteMutation();
 
   const [
