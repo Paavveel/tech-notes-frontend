@@ -1,9 +1,10 @@
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IUser } from './usersTypes';
 
-export const User = ({ id, active, roles, username }: IUser) => {
+export const User = memo(({ id, active, roles, username }: IUser) => {
   const navigate = useNavigate();
 
   const handleEdit = () => navigate(`/dash/users/${id}`);
@@ -23,4 +24,4 @@ export const User = ({ id, active, roles, username }: IUser) => {
       </td>
     </tr>
   );
-};
+});
