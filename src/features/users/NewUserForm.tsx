@@ -20,10 +20,7 @@ export const NewUserForm = () => {
 
   const onSaveUserClicked: SubmitHandler<INewUser> = async (data) => {
     await addNewUser(data);
-
-    if (isSuccess) {
-      navigate('/dash/users');
-    }
+    navigate('/dash/users');
   };
 
   const options = Object.values(ROLES).map((role) => {
