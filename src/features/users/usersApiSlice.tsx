@@ -23,11 +23,11 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     }),
     getUserById: builder.query<IUser, IUser['id']>({
       query: (id) => `/users/${id}`,
-      keepUnusedDataFor: 0,
       transformResponse: ({ _id, ...props }: IUserApiResponse) => ({
         id: _id,
         ...props,
       }),
+      providesTags: (result, err, id) => [{ type: 'User', id }],
     }),
     addNewUser: builder.mutation<void, INewUser>({
       query: (initialUserData) => ({
@@ -57,7 +57,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
           id,
         },
       }),
-      invalidatesTags: (result, err, id) => [{ type: 'User', id }],
+      invalidatesTags: (result, err, id) => [{ type: 'User', id: 'LIST' }],
     }),
   }),
 });
