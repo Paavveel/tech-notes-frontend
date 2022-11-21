@@ -9,7 +9,8 @@ import { setCredentials } from '../../features/auth';
 import { IAuthResponse } from '../../features/auth/authTypes';
 import { RootState } from '../store';
 
-const BASE_URL = 'http://localhost:3500';
+// const BASE_URL = 'http://localhost:3500';
+const BASE_URL = 'https://technotes-paavveel-api.onrender.com';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,
