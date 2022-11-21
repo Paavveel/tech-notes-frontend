@@ -4,8 +4,11 @@ import { ROLES } from './config/roles';
 import { Login, PersistLogin, RequireAuth, Welcome } from './features/auth';
 import { EditNote, NewNoteForm, NotesList } from './features/notes';
 import { EditUser, NewUserForm, UsersList } from './features/users';
+import { useTitle } from './hooks/useTitle';
 
 function App() {
+  useTitle('Pavel Tomilin');
+
   return (
     <Routes>
       <Route path='/' element={<Layout />}>

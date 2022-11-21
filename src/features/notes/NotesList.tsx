@@ -1,11 +1,13 @@
 import PulseLoader from 'react-spinners/PulseLoader';
 import { isFetchBaseQueryError } from '../../app/api/helpers';
 import { useAuth } from '../../hooks/useAuth';
+import { useTitle } from '../../hooks/useTitle';
 import { Note } from './Note';
 import { useGetNotesQuery } from './notesApiSlice';
 import { INote } from './notesTypes';
 
 export const NotesList = () => {
+  useTitle('Notes');
   const { username, isManager, isAdmin } = useAuth();
   const {
     data: sortedNotes,

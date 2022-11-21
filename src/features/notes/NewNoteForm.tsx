@@ -4,11 +4,13 @@ import cn from 'classnames';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import PulseLoader from 'react-spinners/PulseLoader';
+import { useTitle } from '../../hooks/useTitle';
 import { useGetUsersQuery } from '../users';
 import { useAddNewNoteMutation } from './notesApiSlice';
 import { INewNote } from './notesTypes';
 
 export const NewNoteForm = () => {
+  useTitle('New note');
   const {
     data: users,
     isSuccess: isUsersSuccess,

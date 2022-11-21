@@ -1,10 +1,12 @@
 import { useParams } from 'react-router-dom';
 import PulseLoader from 'react-spinners/PulseLoader';
+import { useTitle } from '../../hooks/useTitle';
 import { EditUserForm } from './EditUserForm';
 import { useGetUserByIdQuery } from './usersApiSlice';
 import { UserParams } from './usersTypes';
 
 export const EditUser = () => {
+  useTitle('Edit user');
   const { id } = useParams<keyof UserParams>() as UserParams;
 
   const {

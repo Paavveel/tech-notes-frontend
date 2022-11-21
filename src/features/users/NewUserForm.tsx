@@ -4,10 +4,12 @@ import cn from 'classnames';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { ROLES } from '../../config/roles';
+import { useTitle } from '../../hooks/useTitle';
 import { useAddNewUserMutation } from './usersApiSlice';
 import { INewUser } from './usersTypes';
 
 export const NewUserForm = () => {
+  useTitle('New user');
   const [addNewUser, { isLoading, isError, isSuccess }] =
     useAddNewUserMutation();
   const {

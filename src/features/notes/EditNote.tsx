@@ -1,12 +1,14 @@
 import { useParams } from 'react-router-dom';
 import PulseLoader from 'react-spinners/PulseLoader';
 import { useAuth } from '../../hooks/useAuth';
+import { useTitle } from '../../hooks/useTitle';
 import { useGetUsersQuery } from '../users';
 import { EditNoteForm } from './EditNoteForm';
 import { useGetNoteByIdQuery } from './notesApiSlice';
 import { NoteParams } from './notesTypes';
 
 export const EditNote = () => {
+  useTitle('Edit note');
   const { id } = useParams<keyof NoteParams>() as NoteParams;
   const { username, isAdmin, isManager } = useAuth();
   const {

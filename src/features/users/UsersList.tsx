@@ -1,9 +1,11 @@
 import PulseLoader from 'react-spinners/PulseLoader';
 import { isFetchBaseQueryError } from '../../app/api/helpers';
+import { useTitle } from '../../hooks/useTitle';
 import { User } from './User';
 import { useGetUsersQuery } from './usersApiSlice';
 
 export const UsersList = () => {
+  useTitle('Users');
   const {
     data: users,
     isLoading,
