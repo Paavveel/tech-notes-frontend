@@ -23,7 +23,6 @@ export const notesApiSlice = apiSlice.injectEndpoints({
     }),
     getNoteById: builder.query<INote, INote['id']>({
       query: (id) => `/notes/${id}`,
-      // keepUnusedDataFor: 0,
       transformResponse: ({ _id, ...props }: INoteApiResponse) => ({
         id: _id,
         ...props,
@@ -58,7 +57,7 @@ export const notesApiSlice = apiSlice.injectEndpoints({
           id,
         },
       }),
-      invalidatesTags: (result, err, id) => [{ type: 'Note', id }],
+      invalidatesTags: (result, err, id) => [{ type: 'Note', id: 'LIST' }],
     }),
   }),
 });
